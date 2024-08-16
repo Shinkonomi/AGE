@@ -2,32 +2,79 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-using namespace std;
+#define numVAOs 1
 
-void init(GLFWwindow* window) { }
+GLuint renderingProgram;
+GLuint vao[numVAOs];
 
-void display(GLFWwindow* window, double currentTime) {
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+GLuint __ARECreateShaderProgram() {
+	const char* vertexShaderSource =
+		"#version 460 \n"
+		"void main(void) {\n"
+		"gl_Position = vec4(0.0, 0.0, 0.0, 1.0); \n"
+		"}";
+	const char* fragmentShaderSource =
+		"#version 460 \n"
+		"out vec4 color; \n"
+		"void main(void) {\n"
+		"color = vec4(0.3, 0.0, 1.0, 1.0); \n"
+		"}";
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	
+	printf("Compiling Shaders...\n");
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(vertexShader);
+	glCompileShader(fragmentShader);
+
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+	printf("Shaders are successfully compiled.\n");
+
+	return shaderProgram;
 }
 
-int main(void) {
+using namespace std;
+
+void __AREInit(GLFWwindow* window) {
+	renderingProgram = __ARECreateShaderProgram();
+	glGenVertexArrays(numVAOs, vao);
+	glBindVertexArray(vao[0]);
+}
+
+void __AREDisplay(GLFWwindow* window, double currentTime) {
+	glClearColor(0.05, 0.05, 0.05, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUseProgram(renderingProgram);
+	glPointSize(30.0f);
+	glDrawArrays(GL_POINTS, 0, numVAOs);
+}
+
+int main(int argc, char *argv[]) {
+	/* GLFW and GLEW initialization */
 	if (!glfwInit()) {
 		exit(EXIT_FAILURE);
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	GLFWwindow* window = glfwCreateWindow(1920, 1080, "All Star Render Engine - Test Window", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	if (glewInit() != GLEW_OK) {
 		exit(EXIT_FAILURE);
 	}
+	// VSYNC Stuff
 	glfwSwapInterval(1);
 
-	init(window);
+	__AREInit(window);
 
 	while (!glfwWindowShouldClose(window)) {
-		display(window, glfwGetTime());
+		__AREDisplay(window, glfwGetTime());
+		//printf("%d\n", glfwGetTime());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
