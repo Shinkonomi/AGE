@@ -1,6 +1,6 @@
 # All-Star Render Engine
 
-![alt text](https://github.com/shinkonomi/ARE/images/ARELogo.png "All Star Render Engine")
+![ALL STAR RENDER ENGINE](https://github.com/Shinkonomi/ARE/blob/main/images/ARELogo.png "All Star Render Engine")
 
 ### ARE is a simple modular real-time render engine with a great emphasize on being used in game engines
 #### This render engine is created with the OpenGL graphics API and it is a personal project for testing different algorithms in real-time computer graphics specifically for game engines use cases
