@@ -2,12 +2,14 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "ARE.hpp"
+
 #define numVAOs 1
 
 GLuint renderingProgram;
 GLuint vao[numVAOs];
 
-GLuint __ARECreateShaderProgram() {
+GLuint _createShaderProgram() {
 	const char* vertexShaderSource =
 		"#version 460 \n"
 		"void main(void) {\n"
@@ -40,13 +42,13 @@ GLuint __ARECreateShaderProgram() {
 
 using namespace std;
 
-void __AREInit(GLFWwindow* window) {
-	renderingProgram = __ARECreateShaderProgram();
+void _init(GLFWwindow* window) {
+	renderingProgram = _createShaderProgram();
 	glGenVertexArrays(numVAOs, vao);
 	glBindVertexArray(vao[0]);
 }
 
-void __AREDisplay(GLFWwindow* window, double currentTime) {
+void _display(GLFWwindow* window, double currentTime) {
 	glClearColor(0.05, 0.05, 0.05, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -55,7 +57,7 @@ void __AREDisplay(GLFWwindow* window, double currentTime) {
 	glDrawArrays(GL_POINTS, 0, numVAOs);
 }
 
-int main(int argc, char *argv[]) {
+int AREInit(void) {
 	/* GLFW and GLEW initialization */
 	if (!glfwInit()) {
 		exit(EXIT_FAILURE);
@@ -70,10 +72,10 @@ int main(int argc, char *argv[]) {
 	// VSYNC Stuff
 	glfwSwapInterval(1);
 
-	__AREInit(window);
+	_init(window);
 
 	while (!glfwWindowShouldClose(window)) {
-		__AREDisplay(window, glfwGetTime());
+		_display(window, glfwGetTime());
 		//printf("%d\n", glfwGetTime());
 		glfwSwapBuffers(window);
 		glfwPollEvents();
