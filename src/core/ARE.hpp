@@ -1,7 +1,13 @@
 #pragma once
 
+#ifdef ARE_EXPORTS
+#	define ARE_API __declspec(dllexport)
+#else
+#	define ARE_API __declspec(dllimport)
+#endif
+
 extern "C" {
 
-	int AREInit(void);
+	ARE_API int AREInit(void);
 
 }
