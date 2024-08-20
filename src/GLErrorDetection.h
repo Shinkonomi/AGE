@@ -1,6 +1,6 @@
 #pragma once
 
-/* Error Handling facilities */
+/* Error Detection facilities */
 
 void printShaderLog(GLuint shader);
 
