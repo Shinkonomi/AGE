@@ -8,6 +8,6 @@
 
 extern "C" {
 
-	ARE_API int AREInit(void);
+	ARE_API int AREInit(int windowWidth, int windowHeight, const char* windowTitle, int swapIntervals);
 
 }

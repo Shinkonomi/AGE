@@ -150,9 +150,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\main.cpp" />
+    <ClCompile Include="src\GLErrorDetection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ARE.h" />
+    <ClInclude Include="src\GLErrorDetection.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
