@@ -152,7 +152,7 @@
     <ClCompile Include="src\core\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\ARE.hpp" />
+    <ClInclude Include="src\core\ARE.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

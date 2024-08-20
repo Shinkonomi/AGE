@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "ARE.hpp"
+#include "ARE.h"
 
 int main(void) {
 

@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "ARE.hpp"
+#include "ARE.h"
 
 #define numVAOs 1
 

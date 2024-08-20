@@ -123,7 +123,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "..\..\bin\ARE.dll" "$(OutDir)"
-xcopy /y /d "..\..\glew32.dll" "$(OutDir)"</Command>
+xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
+$(OutDir)$(ProjectName).exe</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +147,8 @@ xcopy /y /d "..\..\glew32.dll" "$(OutDir)"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "..\..\bin\ARE.dll" "$(OutDir)"
-xcopy /y /d "..\..\glew32.dll" "$(OutDir)"</Command>
+xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
+$(OutDir)$(ProjectName).exe</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
