@@ -27,6 +27,7 @@ void printProgramLog(int program) {
 		log = (char*)malloc(len);
 		glGetProgramInfoLog(program, len, &charWritten, log);
 		std::cout << "Program info log: " << log << std::endl;
+		free(log);
 	}
 }
 
