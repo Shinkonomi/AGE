@@ -5,7 +5,9 @@
 int main(void) {
 
 	// First call to the render engine
-	int returnedValueFromARE = AREInit(1920, 1080, "All Star Render Engine - Test Window", 1);
+	int returnedValueFromARE = ARECreateWindow(1280, 720, "All Star Render Engine - Test Window", 1);
+	if (returnedValueFromARE)
+		exit(returnedValueFromARE);
 
-	exit(returnedValueFromARE);
+	AREInit("shaders\\vertexShader.glsl", "shaders\\fragmentShader.glsl");
 }

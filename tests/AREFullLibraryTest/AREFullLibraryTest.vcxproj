@@ -154,6 +154,10 @@ $(OutDir)$(TargetName)$(TargetExt)</Command>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragmentShader.glsl" />
+    <None Include="shaders\vertexShader.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
