@@ -149,12 +149,12 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\main.cpp" />
-    <ClCompile Include="src\GLErrorDetection.cpp" />
+    <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\ARE.h" />
-    <ClInclude Include="src\GLErrorDetection.h" />
+    <ClInclude Include="src\ARE.h" />
+    <ClInclude Include="src\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
