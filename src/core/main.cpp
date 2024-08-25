@@ -39,10 +39,6 @@ static GLuint _createShaderProgram() {
 
 	const char *vsSource = vertexShaderSource.c_str();
 	const char *fsSource = fragmentShaderSource.c_str();
-
-	std::cout << "In _createShaderProgram" << std::endl;
-	std::cout << vsSource;
-	std::cout << fsSource;
 	
 	std::cout << "Compiling Shaders..." << std::endl;
 	glShaderSource(vertexShader, 1, &vsSource, NULL);
@@ -87,10 +83,31 @@ void _init(GLFWwindow* window) {
 	glBindVertexArray(vao[0]);
 }
 
+float x = 0.0f;
+float inc = 0.01f; // Offset
+double lastTime = 0;
+double deltaTime = 0;
+
 void _display(GLFWwindow* window, double currentTime) {
+	deltaTime = currentTime - lastTime;
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.1, 0.1, 0.4, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	glUseProgram(_renderingProgram);
+
+	x += inc;
+	if (x > 1.0f)
+		inc = -0.01f;
+	if (x < -1.0f)
+		inc = 0.01f;
+	GLuint offsetLoc = glGetUniformLocation(_renderingProgram, "offset"); // get ptr to "offset"
+	glProgramUniform1f(_renderingProgram, offsetLoc, x);
+
 	glPointSize(100.0f);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//std::cout << 1000 / (deltaTime * 1000) << std::endl;
+	lastTime = currentTime;
 }
 
 int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, int swapIntervals) {
@@ -115,15 +132,10 @@ void AREInit(const char* vsFilePath, const char* fsFilePath) {
 	vertexShaderSource = _readShaderSource(vsFilePath);
 	fragmentShaderSource = _readShaderSource(fsFilePath);
 
-	std::cout << "In AREInit" << std::endl;
-	std::cout << vertexShaderSource;
-	std::cout << fragmentShaderSource;
-
 	_init(_window);
 
 	while (!glfwWindowShouldClose(_window)) {
 		_display(_window, glfwGetTime());
-		//printf("%d\n", glfwGetTime());
 		glfwSwapBuffers(_window);
 		glfwPollEvents();
 	}

@@ -10,4 +10,6 @@ int main(void) {
 		exit(returnedValueFromARE);
 
 	AREInit("shaders\\vertexShader.glsl", "shaders\\fragmentShader.glsl");
+
+	exit(returnedValueFromARE);
 }
