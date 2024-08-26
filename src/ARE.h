@@ -12,4 +12,8 @@ extern "C" {
 
 	ARE_API void AREInit(const char* vsFilePath, const char* fsFilePath);
 
+	ARE_API void AREBeginRenderLoop();
+
+	ARE_API void AREDestroyCurrentWindow();
+
 }

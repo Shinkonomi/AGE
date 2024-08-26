@@ -72,24 +72,29 @@ float x = 0.0f;
 float inc = 0.01f; // Offset
 double lastTime = 0;
 double deltaTime = 0;
+double animTickTime = 0.016666667;
+double timeSinceLastAnimTick = 0;
 
 void _display(GLFWwindow* window, double currentTime) {
 	deltaTime = currentTime - lastTime;
+	timeSinceLastAnimTick += deltaTime;
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.1, 0.1, 0.4, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(_renderingProgram);
 
-	x += inc;
-	if (x > 1.0f)
-		inc = -0.01f;
-	if (x < -1.0f)
-		inc = 0.01f;
+	if (timeSinceLastAnimTick >= animTickTime) {
+		x += inc;
+		if (x > 1.0f)
+			inc = -0.01f;
+		if (x < -1.0f)
+			inc = 0.01f;
+		timeSinceLastAnimTick = 0;
+	}
 	GLuint offsetLoc = glGetUniformLocation(_renderingProgram, "offset"); // get ptr to "offset"
 	glProgramUniform1f(_renderingProgram, offsetLoc, x);
 
-	glPointSize(100.0f);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	//std::cout << (1 / deltaTime) << std::endl;
 	lastTime = currentTime;
@@ -118,13 +123,17 @@ void AREInit(const char* vsFilePath, const char* fsFilePath) {
 	fragmentShaderSource = Utils::readShaderSource(fsFilePath);
 
 	_init(_window);
+}
 
+void AREBeginRenderLoop() {
 	while (!glfwWindowShouldClose(_window)) {
 		_display(_window, glfwGetTime());
 		glfwSwapBuffers(_window);
 		glfwPollEvents();
 	}
-	// Clean Up
+}
+
+void AREDestroyCurrentWindow() {
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
