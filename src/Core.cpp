@@ -56,8 +56,12 @@ static GLuint _createShaderProgram() {
 		std::cout << "Linking The Shader Program Failed!" << std::endl;
 		Utils::printProgramLog(shaderProgram);
 	}
-
 	std::cout << "Shaders are successfully compiled" << std::endl;
+
+	glDetachShader(shaderProgram, vertexShader);
+	glDetachShader(shaderProgram, fragmentShader);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
 	return shaderProgram;
 }
