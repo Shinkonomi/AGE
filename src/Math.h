@@ -1,7 +1,6 @@
 #pragma once
 
-
-#include <cmath>
+#include <glm/glm.hpp>
 
 typedef glm::mat4 mat4;
 

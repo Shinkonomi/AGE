@@ -5,6 +5,7 @@
 
 #include "ARE.h"
 #include "Utils.h"
+#include "Math.h"
 
 GLFWwindow* _window;
 

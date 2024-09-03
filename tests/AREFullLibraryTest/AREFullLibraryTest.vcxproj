@@ -71,13 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>
-    </IncludePath>
+    <IncludePath>include;$(IncludePath)</IncludePath>
     <OutDir>.\bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin</OutDir>
-    <IncludePath />
+    <IncludePath>include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -113,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Shinkonomi\Desktop\OpenGL_Projects\ARE\src;C:\Users\Shinkonomi\Desktop\OpenGL_Projects\ARE\src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,6 +126,9 @@ xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
 $(OutDir)$(TargetName)$(TargetExt)
 xcopy /y /d "shaders\*" "$(OutDir)shaders\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y /d "..\..\src\ARE.h" "include\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -136,7 +138,7 @@ xcopy /y /d "shaders\*" "$(OutDir)shaders\"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Shinkonomi\Desktop\OpenGL_Projects\ARE\src;C:\Users\Shinkonomi\Desktop\OpenGL_Projects\ARE\src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,6 +154,9 @@ xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
 $(OutDir)$(TargetName)$(TargetExt)
 xcopy /y /d "shaders\*" "$(OutDir)shaders\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y /d "..\..\src\ARE.h" "include\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />

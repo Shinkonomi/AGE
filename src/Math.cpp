@@ -2,7 +2,7 @@
 
 namespace Math {
 	/*
-	Important Notice: Matracies are filled starting with the leftmost column 
+	Important Notice: Matrices are filled starting with the leftmost column 
 	*/
 
 	/*Builds and returns a transformation matrix*/
