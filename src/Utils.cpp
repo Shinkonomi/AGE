@@ -2,10 +2,19 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <random>
 
 #include "Utils.h"
 
 namespace Utils {
+
+	int randomNumberGenInRange(int min, int max) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<> distr(min, max);
+
+		return distr(gen);
+	}
 
 	std::string readShaderSource(const char* filePath) {
 		std::string content;

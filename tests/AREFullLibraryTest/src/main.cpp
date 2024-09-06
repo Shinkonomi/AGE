@@ -9,9 +9,9 @@ int main(void) {
 	if (returnedValueFromARE > 0)
 		exit(returnedValueFromARE);
 
-	AREInit("shaders\\vertexShader.glsl", "shaders\\fragmentShader.glsl");
-	AREBeginRenderLoop();
+	AREShaderPrograms Programs = AREInit("shaders\\vertexShader.glsl", "shaders\\fragmentShader.glsl");
+	AREBeginRenderLoop(Programs);
 
-	AREDestroyCurrentWindow();
+	AREDestroyCurrentContext();
 	exit(returnedValueFromARE);
 }

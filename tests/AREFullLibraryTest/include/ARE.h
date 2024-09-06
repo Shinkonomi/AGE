@@ -6,14 +6,22 @@
 #	define ARE_API __declspec(dllimport)
 #endif
 
-extern "C" {
+#include <vector>
 
-	ARE_API int ARECreateWindow(int windowWidth, int windowHeight, const char* windowTitle, int swapIntervals);
+typedef uint16_t AREShaderProgramIdx;
 
-	ARE_API void AREInit(const char* vsFilePath, const char* fsFilePath);
+struct AREShaderProgram {
+	AREShaderProgramIdx ShaderProgramIdx;
+	uint32_t Program;
+};
 
-	ARE_API void AREBeginRenderLoop();
+ARE_API typedef std::vector<AREShaderProgram*> AREShaderPrograms;
 
-	ARE_API void AREDestroyCurrentWindow();
 
-}
+ARE_API int ARECreateWindow(int windowWidth, int windowHeight, const char* windowTitle, int swapIntervals);
+
+ARE_API AREShaderPrograms AREInit(const char* vsFilePath, const char* fsFilePath);
+
+ARE_API void AREBeginRenderLoop(AREShaderPrograms shaderPrograms);
+
+ARE_API void AREDestroyCurrentContext();

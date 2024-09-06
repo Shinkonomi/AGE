@@ -2,20 +2,21 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+#include <limits>
+#include <assert.h>
 
 #include "ARE.h"
 #include "Utils.h"
 #include "Math.h"
 
-GLFWwindow* _window;
+static GLFWwindow* _window;
 
-GLuint _renderingProgram;
 GLuint vao[1];
 
 std::string vertexShaderSource;
 std::string fragmentShaderSource;
 
-static GLuint _createShaderProgram() {
+GLuint _createShaderProgram() {
 	GLint VSCompiled;
 	GLint FSCompiled;
 	GLint linked;
@@ -67,10 +68,12 @@ static GLuint _createShaderProgram() {
 	return shaderProgram;
 }
 
-void _init(GLFWwindow* window) {
-	_renderingProgram = _createShaderProgram();
+GLuint _init(GLFWwindow* window) {
+	GLuint renderingProgram = _createShaderProgram();
 	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
+	
+	return renderingProgram;
 }
 
 float x = 0.0f;
@@ -80,14 +83,16 @@ double deltaTime = 0;
 double animTickTime = 0.016666667;
 double timeSinceLastAnimTick = 0;
 
-void _display(GLFWwindow* window, double currentTime) {
+void _display(GLFWwindow* window, double currentTime, AREShaderPrograms shaderPrograms) {
 	deltaTime = currentTime - lastTime;
 	timeSinceLastAnimTick += deltaTime;
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.1, 0.1, 0.4, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(_renderingProgram);
+	GLuint renderingProgram = (GLuint)shaderPrograms[0]->Program;
+
+	glUseProgram(renderingProgram);
 
 	if (timeSinceLastAnimTick >= animTickTime) {
 		x += inc;
@@ -97,8 +102,8 @@ void _display(GLFWwindow* window, double currentTime) {
 			inc = 0.01f;
 		timeSinceLastAnimTick = 0;
 	}
-	GLuint offsetLoc = glGetUniformLocation(_renderingProgram, "offset"); // get ptr to "offset"
-	glProgramUniform1f(_renderingProgram, offsetLoc, x);
+	GLuint offsetLoc = glGetUniformLocation(renderingProgram, "offset"); // get ptr to "offset"
+	glProgramUniform1f(renderingProgram, offsetLoc, x);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	//std::cout << (1 / deltaTime) << std::endl;
@@ -113,6 +118,11 @@ int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	_window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
+	if (_window == NULL) {
+		std::cout << "Failed to create GLFW window" << std::endl;
+		AREDestroyCurrentContext();
+		return EXIT_FAILURE;
+	}
 	glfwMakeContextCurrent(_window);
 	if (glewInit() != GLEW_OK) {
 		return EXIT_FAILURE;
@@ -123,22 +133,37 @@ int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, 
 	return EXIT_SUCCESS;
 }
 
-void AREInit(const char* vsFilePath, const char* fsFilePath) {
+AREShaderPrograms AREInit(const char* vsFilePath, const char* fsFilePath) {
 	vertexShaderSource = Utils::readShaderSource(vsFilePath);
 	fragmentShaderSource = Utils::readShaderSource(fsFilePath);
 
-	_init(_window);
+	GLuint renderingProgram = _init(_window);
+	AREShaderProgram *shaderProgram = (AREShaderProgram *)malloc(sizeof(AREShaderProgram));
+	assert(shaderProgram != NULL && shaderProgram != nullptr);
+	shaderProgram->ShaderProgramIdx = Utils::randomNumberGenInRange(10000, std::numeric_limits<AREShaderProgramIdx>::max());
+	shaderProgram->Program = renderingProgram;
+
+	AREShaderPrograms shaderPrograms;
+	AREShaderPrograms::iterator begin = shaderPrograms.begin();
+	shaderPrograms.insert(begin, shaderProgram);
+
+	return shaderPrograms;
 }
 
-void AREBeginRenderLoop() {
+void AREBeginRenderLoop(AREShaderPrograms shaderPrograms) {
 	while (!glfwWindowShouldClose(_window)) {
-		_display(_window, glfwGetTime());
+		_display(_window, glfwGetTime(), shaderPrograms);
 		glfwSwapBuffers(_window);
 		glfwPollEvents();
 	}
 }
 
-void AREDestroyCurrentWindow() {
+void AREDestroyCurrentContext() {
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
+/*AREShaderPrograms::iterator begin = shaderPrograms.begin();
+AREShaderPrograms::iterator end = shaderPrograms.end();
+for (AREShaderPrograms::iterator current = begin; begin != end; current++) {
+	free(*current._Ptr);
+}*/
