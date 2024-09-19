@@ -13,8 +13,8 @@ static GLFWwindow* _window;
 
 GLuint vao[1];
 
-std::string vertexShaderSource;
-std::string fragmentShaderSource;
+std::string _vertexShaderSource;
+std::string _fragmentShaderSource;
 
 GLuint _createShaderProgram() {
 	GLint VSCompiled;
@@ -24,8 +24,8 @@ GLuint _createShaderProgram() {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	const char *vsSource = vertexShaderSource.c_str();
-	const char *fsSource = fragmentShaderSource.c_str();
+	const char *vsSource = _vertexShaderSource.c_str();
+	const char *fsSource = _fragmentShaderSource.c_str();
 	
 	std::cout << "Compiling Shaders..." << std::endl;
 	glShaderSource(vertexShader, 1, &vsSource, NULL);
@@ -83,14 +83,15 @@ double deltaTime = 0;
 double animTickTime = 0.016666667;
 double timeSinceLastAnimTick = 0;
 
-void _display(GLFWwindow* window, double currentTime, AREShaderPrograms shaderPrograms) {
+void _display(GLFWwindow* window, double currentTime, std::vector<AREShaderProgram*> shaderPrograms) {
 	deltaTime = currentTime - lastTime;
 	timeSinceLastAnimTick += deltaTime;
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.1, 0.1, 0.4, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	GLuint renderingProgram = (GLuint)shaderPrograms[0]->Program;
+	// Test
+	GLuint renderingProgram = shaderPrograms.at(0)->Program;
 
 	glUseProgram(renderingProgram);
 
@@ -106,8 +107,12 @@ void _display(GLFWwindow* window, double currentTime, AREShaderPrograms shaderPr
 	glProgramUniform1f(renderingProgram, offsetLoc, x);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-	//std::cout << (1 / deltaTime) << std::endl;
+	std::cout << (1 / deltaTime) << std::endl;
 	lastTime = currentTime;
+}
+
+void _framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
 }
 
 int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, int swapIntervals) {
@@ -127,30 +132,25 @@ int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, 
 	if (glewInit() != GLEW_OK) {
 		return EXIT_FAILURE;
 	}
+
+	glfwSetFramebufferSizeCallback(_window, _framebufferSizeCallback);
+
 	// VSYNC Stuff
 	glfwSwapInterval(swapIntervals);
 
 	return EXIT_SUCCESS;
 }
 
-AREShaderPrograms AREInit(const char* vsFilePath, const char* fsFilePath) {
-	vertexShaderSource = Utils::readShaderSource(vsFilePath);
-	fragmentShaderSource = Utils::readShaderSource(fsFilePath);
+void AREInit(std::vector<AREShaderProgram*> shaderPrograms,
+	std::string vertexShaderSource, std::string fragmentShaderSource) {
+	_vertexShaderSource = vertexShaderSource;
+	_fragmentShaderSource = fragmentShaderSource;
 
 	GLuint renderingProgram = _init(_window);
-	AREShaderProgram *shaderProgram = (AREShaderProgram *)malloc(sizeof(AREShaderProgram));
-	assert(shaderProgram != NULL && shaderProgram != nullptr);
-	shaderProgram->ShaderProgramIdx = Utils::randomNumberGenInRange(10000, std::numeric_limits<AREShaderProgramIdx>::max());
-	shaderProgram->Program = renderingProgram;
-
-	AREShaderPrograms shaderPrograms;
-	AREShaderPrograms::iterator begin = shaderPrograms.begin();
-	shaderPrograms.insert(begin, shaderProgram);
-
-	return shaderPrograms;
+	shaderPrograms.at(0)->Program = renderingProgram;
 }
 
-void AREBeginRenderLoop(AREShaderPrograms shaderPrograms) {
+void AREBeginRenderLoop(std::vector<AREShaderProgram*> shaderPrograms) {
 	while (!glfwWindowShouldClose(_window)) {
 		_display(_window, glfwGetTime(), shaderPrograms);
 		glfwSwapBuffers(_window);
@@ -162,8 +162,3 @@ void AREDestroyCurrentContext() {
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
-/*AREShaderPrograms::iterator begin = shaderPrograms.begin();
-AREShaderPrograms::iterator end = shaderPrograms.end();
-for (AREShaderPrograms::iterator current = begin; begin != end; current++) {
-	free(*current._Ptr);
-}*/

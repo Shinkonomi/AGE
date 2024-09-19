@@ -8,20 +8,16 @@
 
 #include <vector>
 
-typedef uint16_t AREShaderProgramIdx;
-
 struct AREShaderProgram {
-	AREShaderProgramIdx ShaderProgramIdx;
-	uint32_t Program;
+	unsigned int Program;
 };
-
-ARE_API typedef std::vector<AREShaderProgram*> AREShaderPrograms;
 
 
 ARE_API int ARECreateWindow(int windowWidth, int windowHeight, const char* windowTitle, int swapIntervals);
 
-ARE_API AREShaderPrograms AREInit(const char* vsFilePath, const char* fsFilePath);
+ARE_API void AREInit(std::vector<AREShaderProgram*> shaderPrograms,
+	std::string vertexShaderSource, std::string fragmentShaderSource);
 
-ARE_API void AREBeginRenderLoop(AREShaderPrograms shaderPrograms);
+ARE_API void AREBeginRenderLoop(std::vector<AREShaderProgram*> shaderPrograms);
 
 ARE_API void AREDestroyCurrentContext();

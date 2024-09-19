@@ -16,20 +16,6 @@ namespace Utils {
 		return distr(gen);
 	}
 
-	std::string readShaderSource(const char* filePath) {
-		std::string content;
-		std::ifstream fileStream(filePath, std::ios::in);
-		std::string line = "";
-
-		while (!fileStream.eof()) {
-			std::getline(fileStream, line);
-			content.append(line + "\n");
-		}
-
-		fileStream.close();
-		return content;
-	}
-
 	void printShaderLog(GLuint shader) {
 		int len = 0;
 		int charWritten = 0;
