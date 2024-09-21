@@ -11,7 +11,11 @@
 
 static GLFWwindow* _window;
 
-GLuint vao[1];
+float Vertecies[] = {
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	0.0f, 0.5f, 0.0f
+};
 
 std::string _vertexShaderSource;
 std::string _fragmentShaderSource;
@@ -68,11 +72,38 @@ GLuint _createShaderProgram() {
 	return shaderProgram;
 }
 
+static GLuint VAO;
+
 GLuint _init(GLFWwindow* window) {
+
 	GLuint renderingProgram = _createShaderProgram();
-	glGenVertexArrays(1, vao);
-	glBindVertexArray(vao[0]);
-	
+
+	float Vertecies[] = {
+		0.5f, 0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f
+	};
+	unsigned int Indices[] = {
+		0, 1, 3, //First Tri
+		1, 2, 3 //Second Tri
+	};
+
+	GLuint VBO, EBO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_DYNAMIC_DRAW);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertecies), Vertecies, GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
 	return renderingProgram;
 }
 
@@ -89,11 +120,11 @@ void _display(GLFWwindow* window, double currentTime, std::vector<AREShaderProgr
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.1, 0.1, 0.4, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-
 	// Test
 	GLuint renderingProgram = shaderPrograms.at(0)->Program;
 
 	glUseProgram(renderingProgram);
+	glBindVertexArray(VAO);
 
 	if (timeSinceLastAnimTick >= animTickTime) {
 		x += inc;
@@ -106,7 +137,9 @@ void _display(GLFWwindow* window, double currentTime, std::vector<AREShaderProgr
 	GLuint offsetLoc = glGetUniformLocation(renderingProgram, "offset"); // get ptr to "offset"
 	glProgramUniform1f(renderingProgram, offsetLoc, x);
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 	std::cout << (1 / deltaTime) << std::endl;
 	lastTime = currentTime;
 }
