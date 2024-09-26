@@ -87,6 +87,8 @@ GLuint _init(GLFWwindow* window) {
 
 	GLuint VBO, EBO;
 	
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -132,7 +134,7 @@ void _display(GLFWwindow* window, double currentTime, std::vector<ARE_ShaderProg
 	GLuint offsetLoc = glGetUniformLocation(renderingProgram, "offset"); // get ptr to "offset"
 	glProgramUniform1f(renderingProgram, offsetLoc, x);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	//std::cout << (1 / deltaTime) << std::endl;
