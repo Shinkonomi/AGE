@@ -11,12 +11,6 @@
 
 static GLFWwindow* _window;
 
-float Vertecies[] = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	0.0f, 0.5f, 0.0f
-};
-
 std::string _vertexShaderSource;
 std::string _fragmentShaderSource;
 
@@ -74,6 +68,8 @@ GLuint _createShaderProgram() {
 
 static GLuint VAO;
 
+
+
 GLuint _init(GLFWwindow* window) {
 
 	GLuint renderingProgram = _createShaderProgram();
@@ -90,8 +86,7 @@ GLuint _init(GLFWwindow* window) {
 	};
 
 	GLuint VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -114,7 +109,7 @@ double deltaTime = 0;
 double animTickTime = 0.016666667;
 double timeSinceLastAnimTick = 0;
 
-void _display(GLFWwindow* window, double currentTime, std::vector<AREShaderProgram*> shaderPrograms) {
+void _display(GLFWwindow* window, double currentTime, std::vector<ARE_ShaderProgram*> shaderPrograms) {
 	deltaTime = currentTime - lastTime;
 	timeSinceLastAnimTick += deltaTime;
 	glClear(GL_DEPTH_BUFFER_BIT);
@@ -140,12 +135,17 @@ void _display(GLFWwindow* window, double currentTime, std::vector<AREShaderProgr
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-	std::cout << (1 / deltaTime) << std::endl;
+	//std::cout << (1 / deltaTime) << std::endl;
 	lastTime = currentTime;
 }
 
 void _framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
+}
+
+void ARECreateVAO(ARE_VAO* VAO) {
+	glGenVertexArrays(1, VAO);
+	glBindVertexArray(*VAO);
 }
 
 int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, int swapIntervals) {
@@ -174,7 +174,7 @@ int ARECreateWindow(int windowWidth, int windowHeight, const char *windowTitle, 
 	return EXIT_SUCCESS;
 }
 
-void AREInit(std::vector<AREShaderProgram*> shaderPrograms,
+void AREInit(std::vector<ARE_ShaderProgram*> shaderPrograms,
 	std::string vertexShaderSource, std::string fragmentShaderSource) {
 	_vertexShaderSource = vertexShaderSource;
 	_fragmentShaderSource = fragmentShaderSource;
@@ -183,7 +183,7 @@ void AREInit(std::vector<AREShaderProgram*> shaderPrograms,
 	shaderPrograms.at(0)->Program = renderingProgram;
 }
 
-void AREBeginRenderLoop(std::vector<AREShaderProgram*> shaderPrograms) {
+void AREBeginRenderLoop(std::vector<ARE_ShaderProgram*> shaderPrograms) {
 	while (!glfwWindowShouldClose(_window)) {
 		_display(_window, glfwGetTime(), shaderPrograms);
 		glfwSwapBuffers(_window);

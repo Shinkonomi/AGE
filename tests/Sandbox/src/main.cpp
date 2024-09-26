@@ -24,8 +24,8 @@ int main(void) {
 	if (returnedValueFromARE > 0)
 		exit(returnedValueFromARE);
 
-	std::vector<AREShaderProgram*> Programs;
-	AREShaderProgram* ShaderProgram = (AREShaderProgram*)malloc(sizeof(AREShaderProgram));
+	std::vector<ARE_ShaderProgram*> Programs;
+	ARE_ShaderProgram* ShaderProgram = (ARE_ShaderProgram*)malloc(sizeof(ARE_ShaderProgram));
 	Programs.push_back(ShaderProgram);
 	std::string vertexShaderSource = readShaderSource("shaders\\vertexShader.glsl");
 	std::string fragmentShaderSource = readShaderSource("shaders\\fragmentShader.glsl");
@@ -33,5 +33,6 @@ int main(void) {
 	AREBeginRenderLoop(Programs);
 
 	AREDestroyCurrentContext();
+	free(ShaderProgram);
 	exit(returnedValueFromARE);
 }
