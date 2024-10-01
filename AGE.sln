@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RHI", "Engine\RHI\RHI.vcxproj", "{3397F3DB-A4C3-4F23-B67B-53DC066D545A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RHI", "Engine\Runtime\RHI\RHI.vcxproj", "{3397F3DB-A4C3-4F23-B67B-53DC066D545A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "tests\Sandbox\Sandbox.vcxproj", "{3DE5BB7D-DBED-4A03-AFEA-D314E2E507E4}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "tests\Sandbox\Sa
 		{8A5B7293-88A2-472A-BE16-02D629ACFE2B} = {8A5B7293-88A2-472A-BE16-02D629ACFE2B}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AGECore", "Engine\Core\AGECore\AGECore.vcxproj", "{8A5B7293-88A2-472A-BE16-02D629ACFE2B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Engine\Runtime\Core\Core.vcxproj", "{8A5B7293-88A2-472A-BE16-02D629ACFE2B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3397F3DB-A4C3-4F23-B67B-53DC066D545A} = {3397F3DB-A4C3-4F23-B67B-53DC066D545A}
 	EndProjectSection

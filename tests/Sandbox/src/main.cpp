@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include <ARE.h>
+#include "RHI.h"
 
 std::string readShaderSource(const char* filePath) {
 		std::string content;
@@ -19,20 +19,13 @@ std::string readShaderSource(const char* filePath) {
 	}
 
 int main(void) {
-	// First call to the render engine
-	int returnedValueFromARE = ARECreateWindow(1280, 720, "All Star Render Engine - Test Window", 0);
-	if (returnedValueFromARE > 0)
-		exit(returnedValueFromARE);
+	// First call to the RHI
+	int returnedValueFromRHI = RHI::createWindow(1280, 720, "All Star Game Engine - Test Window");
+	if (returnedValueFromRHI > 0)
+		exit(returnedValueFromRHI);
 
-	std::vector<ARE_ShaderProgram*> Programs;
-	ARE_ShaderProgram* ShaderProgram = (ARE_ShaderProgram*)malloc(sizeof(ARE_ShaderProgram));
-	Programs.push_back(ShaderProgram);
 	std::string vertexShaderSource = readShaderSource("shaders\\vertexShader.glsl");
 	std::string fragmentShaderSource = readShaderSource("shaders\\fragmentShader.glsl");
-	AREInit(Programs, vertexShaderSource, fragmentShaderSource);
-	AREBeginRenderLoop(Programs);
 
-	AREDestroyCurrentContext();
-	free(ShaderProgram);
-	exit(returnedValueFromARE);
+	exit(returnedValueFromRHI);
 }

@@ -118,18 +118,16 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);RHI.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\build;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);..\..\build\*.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-$(OutDir)$(TargetName)$(TargetExt)</Command>
+      <Command>$(OutDir)$(TargetName)$(TargetExt)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /y /d "..\..\Engine\RHI\src\ARE.h" "include"
+      <Command>xcopy /y /d "..\..\Engine\Runtime\RHI\src\RHI.h" ".\include"
 xcopy /y /d "..\..\build\*" "$(OutDir)"
-xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
-xcopy /y /d "shaders\*" "$(OutDir)"</Command>
+xcopy /y /d ".\shaders\*" "$(OutDir)shaders"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,18 +145,16 @@ xcopy /y /d "shaders\*" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);RHI.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);..\..\build\*.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\build;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-$(OutDir)$(TargetName)$(TargetExt)</Command>
+      <Command>$(OutDir)$(TargetName)$(TargetExt)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /y /d "..\..\Engine\RHI\src\ARE.h" "include"
+      <Command>xcopy /y /d "..\..\Engine\Runtime\RHI\src\RHI.h" ".\include"
 xcopy /y /d "..\..\build\*" "$(OutDir)"
-xcopy /y /d "..\..\glew32.dll" "$(OutDir)"
-xcopy /y /d "shaders\*" "$(OutDir)"</Command>
+xcopy /y /d ".\shaders\*" "$(OutDir)shaders"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
