@@ -11,6 +11,6 @@
 
 1. First make sure that the latest driver for your graphics card is installed on your operating system
 2. Install the latest version of visual studio 2022
-3. Install the latest VulkanSDK
+3. Install the 1.3.290.0 version of VulkanSDK
 4. Open the **AGE.sln** solution file and put the VS debugger on **release** mode (make sure that you're on x64) and then on the **Solution Explorer** window right click on **AGE** and click on **build**
 5. After the solution is built navigate to **bin** folder and there should be the .dll files that is needed for building your game
